@@ -1,0 +1,56 @@
+﻿@model InfoTrack.Models.ViewModels.IndexViewModel
+@{
+    ViewData["Title"] = "Page Ranking";
+}
+
+<p class="lead">Determine the ranking of a website in Google.</p>
+
+<form asp-action="Index" method="post" class="form-horizontal">
+  <div class="form-group">
+    <label asp-for="Req.DomainAddress" class="col-sm-2 control-label"></label>
+    <div class="col-sm-10">
+      <input asp-for="Req.DomainAddress" class="form-control" placeholder="(http|https)://www.">
+      <span asp-validation-for="Req.DomainAddress" class="text-danger"></span>
+      <span id="helpBlock" class="help-block">Provie the address of the website that you want to lookup. <kbd>(http|https)://www.domain.com</kbd></span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label asp-for="Req.Keywords" class="col-sm-2 control-label"></label>
+    <div class="col-sm-10">
+      <input asp-for="Req.Keywords" class="form-control" placeholder="Keywords">
+    </div>
+  </div>
+  
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </div>
+</form>
+
+@if (Model.Results != null)
+{
+  <h2>Results</h2>
+
+  @if (!Model.HasResults) 
+  {
+    <p class="text-danger">
+      Sorry, it looks like <em>@Model.Req.DomainAddress</em> was not found in the top 100 results.
+    </p>
+  } else {
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var item in Model.Results)
+        {
+          <tr><td>@item.Rank</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+}
