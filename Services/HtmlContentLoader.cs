@@ -14,17 +14,15 @@ namespace InfoTrack.Services
 
     public static HtmlContent Load(Uri endpoint)
     {
-      string pageContent = string.Empty;
       try
       {
-        pageContent = _httpClient.GetStringAsync(endpoint).Result;
+        string pageContent = _httpClient.GetStringAsync(endpoint).Result;
+        return new HtmlContent(pageContent);
       }
       catch (Exception)
       {
         throw new Exception($"Unable to communite with server [{endpoint}].");
       }
-
-      return new HtmlContent(pageContent);
     }
   }
 }
